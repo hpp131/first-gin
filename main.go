@@ -30,6 +30,8 @@ func middleFunc(ctx *gin.Context) {
 
 func main() {
 	r := gin.Default()
+	//将中间件设置为全局中间件，每个请求在处理前都会经过中间件
+	//r.Use(middleFunc)
 	//引入抽离出来的路由分组
 	routes.AdminRouterGroup(r)
 	// 注册自定义模版函数
