@@ -13,5 +13,7 @@ func (c AdminController) Index(ctx *gin.Context) {
 }
 
 func (c AdminController) User(ctx *gin.Context) {
-	ctx.String(200, "admin-user api success")
+	name, _ := ctx.Get("name")
+	result, _ := name.(string)
+	ctx.String(200, result)
 }
