@@ -1,11 +1,18 @@
 package admin
 
-import "github.com/gin-gonic/gin"
+import (
+	"first-gin/models"
+	"github.com/gin-gonic/gin"
+	"time"
+)
 
 type AdminController struct {
 	//通过结构体的嵌套实现controller的继承
 	BaseController
 }
+
+// 调用models中的公共方法
+var timeNow = models.UnixToDate(time.Now().Unix())
 
 func (c AdminController) Index(ctx *gin.Context) {
 	//ctx.String(200, "admin-index api success")
@@ -15,5 +22,5 @@ func (c AdminController) Index(ctx *gin.Context) {
 func (c AdminController) User(ctx *gin.Context) {
 	name, _ := ctx.Get("name")
 	result, _ := name.(string)
-	ctx.String(200, result)
+	ctx.String(200, result+timeNow)
 }
