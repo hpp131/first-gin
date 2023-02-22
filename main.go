@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"html/template"
+	"strconv"
 	"time"
 )
 
@@ -16,6 +17,15 @@ type Result struct {
 type Bind struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
+}
+
+// 设置中间件，最后一个func方法前触发的方法都可以叫做中间件，也就是说中间件可以定义并使用多个
+func middleFunc(ctx *gin.Context) {
+	start_time := time.Now().Unix()
+	ctx.String(200, "I'm a middleware")
+	ctx.Next()
+	end_time := time.Now().Unix()
+	ctx.String(200, strconv.Itoa(int(end_time-start_time)))
 }
 
 func main() {
@@ -85,6 +95,12 @@ func main() {
 		var bind Bind
 		context.ShouldBind(&bind)
 		context.JSON(200, bind)
+	})
+	r.GET("/middleware", middleFunc, func(context *gin.Context) {
+		time.Sleep(time.Second)
+		context.JSON(200, gin.H{
+			"msg": "调用middleware",
+		})
 	})
 
 	r.Run()
