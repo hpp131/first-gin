@@ -2,7 +2,9 @@ package admin
 
 import (
 	"first-gin/models"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"time"
 )
 
@@ -23,4 +25,15 @@ func (c AdminController) User(ctx *gin.Context) {
 	name, _ := ctx.Get("name")
 	result, _ := name.(string)
 	ctx.String(200, result+timeNow)
+}
+
+func (c AdminController) GenerateCaptcha(ctx *gin.Context) {
+	id, b64s, err := models.Generate()
+	if err != nil {
+		fmt.Println(err)
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"captchaid":   id,
+		"captchadata": b64s,
+	})
 }

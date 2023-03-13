@@ -14,5 +14,8 @@ func AdminRouterGroup(r *gin.Engine) {
 			context.String(200, "admin-index api success")
 		})
 		adminrouter.GET("/user", admin.AdminController{}.User)
+		adminrouter.GET("/generateCaptcha", admin.AdminController{}.GenerateCaptcha)
+		adminrouter.GET("/generateCaptcha", admin.AdminController{}.GenerateCaptcha)
+
 	}
 }

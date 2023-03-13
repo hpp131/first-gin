@@ -1,38 +1,35 @@
 package main
 
 import (
-	"fmt"
+	"first-gin/routes"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"strconv"
-	"time"
 )
 
 type User struct {
-	Name string
-	Age  int
-	Job  string
+	gorm.Model
+	Name       string `gorm:"size:100"`
+	CreditCard CreditCard
 }
 
-// 设置中间件，最后一个func方法前触发的方法都可以叫做中间件，也就是说中间件可以定义并使用多个
-func middleFunc(ctx *gin.Context) {
-	start_time := time.Now().Unix()
-	ctx.String(200, "I'm a middleware")
-	ctx.Next()
-	end_time := time.Now().Unix()
-	ctx.String(200, strconv.Itoa(int(end_time-start_time)))
+type CreditCard struct {
+	gorm.Model
+	Number string
+	UserID int
 }
 
 func main() {
+	//dsn := "root:Strong@01@tcp(172.31.0.1:3306)/gin?charset=utf8mb4&parseTime=True&loc=Local"
+	//db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	//if err != nil {
+	//	fmt.Println(err)
+	//}
+	//var user User
+	//db.AutoMigrate(&User{}, &CreditCard{})
+	//db.First(&user)
+	//db.Model(&user).Association("CreditCard").Clear()
 	r := gin.Default()
-	//
-	dsn := "root:Strong@01@tcp(172.31.0.1:3306)/gin?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		fmt.Println(err)
-	}
-	db.AutoMigrate(&User{})
-
+	//引入抽离出来的路由分组
+	routes.AdminRouterGroup(r)
 	r.Run()
 }
