@@ -15,7 +15,7 @@ func AdminRouterGroup(r *gin.Engine) {
 		})
 		adminrouter.GET("/user", admin.AdminController{}.User)
 		adminrouter.GET("/generateCaptcha", admin.AdminController{}.GenerateCaptcha)
-		adminrouter.GET("/generateCaptcha", admin.AdminController{}.GenerateCaptcha)
+		adminrouter.GET("/testSession", admin.AdminController{}.TestSession)
 
 	}
 }

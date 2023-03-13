@@ -2,6 +2,8 @@ package main
 
 import (
 	"first-gin/routes"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -20,6 +22,10 @@ type CreditCard struct {
 
 func main() {
 	r := gin.Default()
+	//Invoke sessions dependency and use cookie as stroage engine
+	store := cookie.NewStore([]byte("secret123"))
+	// import sessions as middleware
+	r.Use(sessions.Sessions("mySession", store))
 
 	//引入抽离出来的路由分组
 	routes.AdminRouterGroup(r)

@@ -3,6 +3,7 @@ package admin
 import (
 	"first-gin/models"
 	"fmt"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
@@ -35,5 +36,14 @@ func (c AdminController) GenerateCaptcha(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"captchaid":   id,
 		"captchadata": b64s,
+	})
+}
+
+func (c AdminController) TestSession(ctx *gin.Context) {
+	session := sessions.Default(ctx)
+	session.Set("username", "zhangsan")
+	session.Save()
+	ctx.JSON(http.StatusOK, gin.H{
+		"sessionid": session.Get("username"),
 	})
 }
