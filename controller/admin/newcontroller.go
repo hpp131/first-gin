@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"time"
 )
@@ -46,4 +47,17 @@ func (c AdminController) TestSession(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"sessionid": session.Get("username"),
 	})
+}
+
+func (c AdminController) Date(ctx *gin.Context) {
+	ctx.JSON(200, gin.H{
+		"date": time.Now(),
+	})
+}
+
+func (c AdminController) File(ctx *gin.Context) {
+	file, _ := ctx.FormFile("file")
+	log.Println(file.Filename)
+	ctx.SaveUploadedFile(file, file.Filename)
+	ctx.String(http.StatusOK, fmt.Sprintf("%s upload successfully", file.Filename))
 }

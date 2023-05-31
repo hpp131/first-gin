@@ -2,10 +2,11 @@ package main
 
 import (
 	"first-gin/routes"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"log"
+	"net/http"
 )
 
 type User struct {
@@ -22,11 +23,23 @@ type CreditCard struct {
 
 func main() {
 	r := gin.Default()
+	//r.MaxMultipartMemory = 8 << 20
 	//Invoke sessions dependency and use cookie as stroage engine
-	store := cookie.NewStore([]byte("secret123"))
+	//store := cookie.NewStore([]byte("secret123"))
 	// import sessions as middleware
-	r.Use(sessions.Sessions("mySession", store))
-
+	//r.Use(sessions.Sessions("mySession", store))
+	r.POST("/upload", func(c *gin.Context) {
+		file, _ := c.FormFile("file")
+		log.Println(file.Filename)
+		c.SaveUploadedFile(file, file.Filename)
+		c.String(http.StatusOK, fmt.Sprintf("%s upload successfully", file.Filename))
+	})
+	r1 := r.Group("/admin")
+	{
+		r1.GET("/test", func(context *gin.Context) {
+			context.String(200, "success")
+		})
+	}
 	//引入抽离出来的路由分组
 	routes.AdminRouterGroup(r)
 	r.Run()
