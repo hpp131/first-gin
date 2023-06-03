@@ -56,7 +56,7 @@ func (c AdminController) Date(ctx *gin.Context) {
 }
 
 func (c AdminController) File(ctx *gin.Context) {
-	file, _ := ctx.FormFile("file")
+	file, _ := ctx.FormFile("myfile")
 	log.Println(file.Filename)
 	ctx.SaveUploadedFile(file, file.Filename)
 	ctx.String(http.StatusOK, fmt.Sprintf("%s upload successfully", file.Filename))

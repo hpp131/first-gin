@@ -2,11 +2,8 @@ package main
 
 import (
 	"first-gin/routes"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"log"
-	"net/http"
 )
 
 type User struct {
@@ -28,12 +25,7 @@ func main() {
 	//store := cookie.NewStore([]byte("secret123"))
 	// import sessions as middleware
 	//r.Use(sessions.Sessions("mySession", store))
-	r.POST("/upload", func(c *gin.Context) {
-		file, _ := c.FormFile("file")
-		log.Println(file.Filename)
-		c.SaveUploadedFile(file, file.Filename)
-		c.String(http.StatusOK, fmt.Sprintf("%s upload successfully", file.Filename))
-	})
+
 	r1 := r.Group("/admin")
 	{
 		r1.GET("/test", func(context *gin.Context) {
